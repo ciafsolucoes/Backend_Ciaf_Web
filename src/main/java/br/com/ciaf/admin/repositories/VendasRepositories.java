@@ -14,13 +14,13 @@ import br.com.ciaf.admin.entities.Vendas;
 public interface VendasRepositories extends BaseRepository<Vendas, Long>{
 	
 	public List<Vendas> findAllByOrderByClientAsc();
-	
+
 	@Transactional
 	@Modifying
-	@Query(value = "DELETE FROM vendas WHERE id =:id", nativeQuery = true)
+	@Query("DELETE FROM Vendas v WHERE v.id = :id")
 	List<Vendas> deleteBySellerId(@Param("id") Long id);
-	
-	@Query(value = "SELECT * from vendas WHERE emitente_id =:emitente_id AND vendedor LIKE :vendedor%", nativeQuery = true)
+
+	@Query("SELECT v FROM Vendas v WHERE v.emitente_id = :emitente_id AND v.vendedor LIKE CONCAT(:vendedor, '%')")
 	List<Vendas> findBySellerName(@Param("emitente_id") Long emitente_id, @Param("vendedor") String vendedor);
 	
 	@Query(value = "SELECT * from vendas where client =:client", nativeQuery = true)   

@@ -1,0 +1,62 @@
+package br.com.ciaf.admin.controllers.fiscal;
+
+import br.com.ciaf.admin.entities.fiscal.OrdemServicos;
+import br.com.ciaf.admin.services.fiscal.ServicosService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
+
+@RestController
+@RequestMapping("/ordem-servicos-teste")
+public class ServicosController {
+
+    private final ServicosService service;
+
+    public ServicosController(ServicosService service) {
+        this.service = service;
+    }
+
+    @CrossOrigin
+    @GetMapping
+    public ResponseEntity<List<OrdemServicos>> findAll(@RequestParam(value = "client_id", required = false) Long client_id) {
+        List<OrdemServicos> list;
+        if (client_id != null) {
+            list = service.findAll(client_id);
+        } else {
+            list = service.findAll();
+        }
+        return ResponseEntity.ok().body(list);
+    }
+
+    @CrossOrigin
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<OrdemServicos> findById(@PathVariable Long id) {
+        OrdemServicos obj = service.findById(id);
+        return ResponseEntity.ok().body(obj);
+    }
+
+    @CrossOrigin
+    @PostMapping
+    public ResponseEntity<OrdemServicos> create(@RequestBody OrdemServicos obj) {
+        obj = service.save(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).body(obj);
+    }
+
+    @CrossOrigin
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<OrdemServicos> update(@PathVariable Long id, @RequestBody OrdemServicos obj) {
+        obj = service.update(id, obj);
+        return ResponseEntity.noContent().build();
+    }
+
+    @CrossOrigin
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}

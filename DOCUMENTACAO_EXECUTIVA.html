@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação Executiva - CIAF-ID</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f4f7f6;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        h3 { margin-top: 30px; }
+        h4 { color: #2980b9; border-bottom: none; }
+        h5 { color: #16a085; border-bottom: none; font-size: 1.1em; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 30px 0; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+        strong { color: #2c3e50; }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Documentação Executiva e Funcional: Sistema Backend CIAF-ID</h3>
+<h4>1. Visão Geral do Sistema</h4>
+<p>O <strong>CIAF-ID API</strong> é o núcleo de processamento backend desenvolvido para sustentar as operações administrativas e fiscais de empresas de diversos portes. Construído com a robusta tecnologia Spring Boot, o sistema atua como uma central de inteligência que integra desde o controle de estoque e vendas até a complexa comunicação com órgãos governamentais (SEFAZ) para a emissão de documentos fiscais eletrônicos.</p>
+<p>O principal objetivo do sistema é garantir a integridade dos dados, a automação de processos financeiros e a conformidade legal das operações comerciais, oferecendo uma base sólida e escalável para o crescimento do negócio.</p>
+<hr />
+<h4>2. Módulos e Funcionalidades Principais</h4>
+<h5>📦 Gestão de Estoque e Produtos</h5>
+<ul>
+<li><strong>Controle Centralizado:</strong> Registro detalhado de produtos, incluindo gestão de SKUs, códigos de barras (EAN) e categorias.</li>
+<li><strong>Monitoramento de Níveis:</strong> Alertas e consultas de estoque mínimo, permitindo uma reposição estratégica.</li>
+<li><strong>Importação Inteligente:</strong> Facilidade na entrada de dados através da importação de arquivos XML de notas fiscais de fornecedores, automatizando o cadastro de produtos e atualização de estoque.</li>
+</ul>
+<h5>💰 Ciclo de Vendas e Faturamento</h5>
+<ul>
+<li><strong>Operação de Vendas:</strong> Gestão completa de pedidos de venda, integrando vendedores, clientes e condições de pagamento.</li>
+<li><strong>PDV e Orçamentos:</strong> Suporte tanto para vendas rápidas quanto para a elaboração de orçamentos complexos.</li>
+<li><strong>Comissionamento:</strong> Rastreabilidade de vendas por vendedor para fins de gestão de performance.</li>
+</ul>
+<h5>📑 Módulo Fiscal (Compliance)</h5>
+<ul>
+<li><strong>Emissão de Documentos:</strong> Processamento e autorização de NF-e (Nota Fiscal Eletrônica) e NFC-e (Nota Fiscal de Consumidor Eletrônica).</li>
+<li><strong>Gestão de Eventos:</strong> Suporte a cancelamentos, cartas de correção e inutilização de numeração, garantindo a conformidade com a legislação vigente.</li>
+<li><strong>Integração SEFAZ:</strong> Comunicação direta com a Secretaria da Fazenda para monitoramento de status de serviços e autorizações em tempo real.</li>
+</ul>
+<h5>🏦 Gestão Financeira</h5>
+<ul>
+<li><strong>Contas a Receber e Pagar:</strong> Controle rigoroso de fluxo de caixa, permitindo o acompanhamento de inadimplência e compromissos financeiros.</li>
+<li><strong>Fluxo de Caixa e Caixa Diário:</strong> Visão consolidada das movimentações financeiras diárias e projeções futuras.</li>
+<li><strong>Meios de Pagamento:</strong> Flexibilidade na configuração de múltiplas formas de pagamento e condições de parcelamento.</li>
+</ul>
+<h5>📊 Relatórios e Inteligência de Dados</h5>
+<ul>
+<li><strong>JasperReports Integration:</strong> Geração de documentos profissionais em PDF (DANFE, Relatórios de Vendas, Comprovantes) através da integração com o motor Jasper.</li>
+</ul>
+<hr />
+<h4>3. Pilares Tecnológicos</h4>
+<p>Para garantir a estabilidade e segurança exigidas pelo mercado corporativo, o sistema utiliza:<br />
+*   <strong>Linguagem:</strong> Java 17 (Alta performance e suporte de longo prazo).<br />
+*   <strong>Framework:</strong> Spring Boot (Eficiência no desenvolvimento e facilidade de manutenção).<br />
+*   <strong>Banco de Dados:</strong> MySQL (Confiabilidade no armazenamento de dados relacionais).<br />
+*   <strong>Segurança:</strong> Implementação de JWT (JSON Web Token) para autenticação segura entre aplicações e criptografia de senhas (BCrypt).</p>
+<hr />
+<h4>4. Informações Estratégicas para Desenvolvedores</h4>
+<p>Para novos membros da equipe técnica, é essencial compreender que o projeto segue os padrões de arquitetura RESTful, onde cada funcionalidade é exposta através de "Endpoints" (pontos de acesso) que podem ser consumidos por interfaces web ou aplicativos móveis.</p>
+<ul>
+<li><strong>Padrão de Código:</strong> O sistema utiliza o padrão MVC (Model-View-Controller) adaptado para APIs, focando na separação clara entre a lógica de negócio (Services), o acesso a dados (Repositories) e a interface de comunicação (Controllers).</li>
+<li><strong>Configurações:</strong> Centralizadas no arquivo <code>application.properties</code>, onde se gerenciam conexões com banco de dados, chaves de segurança e parâmetros de e-mail.</li>
+<li><strong>Extensibilidade:</strong> O projeto está estruturado de forma modular, facilitando a adição de novos regimes tributários ou integrações com outros meios de pagamento sem impactar as funcionalidades core existentes.</li>
+</ul>
+<hr />
+<h4>5. Valor Agregado ao Negócio</h4>
+<p>A implementação deste backend proporciona à diretoria uma visão real e em tempo real da saúde da empresa. A automação fiscal reduz drasticamente o risco de multas, enquanto a integração financeira assegura que o capital de giro seja gerido com precisão. Em suma, o <strong>CIAF-ID API</strong> não é apenas um software, mas o motor tecnológico que impulsiona a eficiência operacional da organização.</p>
+    </div>
+</body>
+</html>

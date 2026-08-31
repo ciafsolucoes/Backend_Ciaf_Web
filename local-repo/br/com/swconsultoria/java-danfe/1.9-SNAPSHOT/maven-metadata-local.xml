@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>br.com.swconsultoria</groupId>
+  <artifactId>java-danfe</artifactId>
+  <versioning>
+    <lastUpdated>20250424144604</lastUpdated>
+    <snapshot>
+      <localCopy>true</localCopy>
+    </snapshot>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>1.9-SNAPSHOT</value>
+        <updated>20250424144604</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>1.9-SNAPSHOT</value>
+        <updated>20250424144604</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+  <version>1.9-SNAPSHOT</version>
+</metadata>

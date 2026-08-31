@@ -1,0 +1,252 @@
+diff --git a/src/main/java/br/com/ciaf/admin/controllers/fiscal/EmitNfce.java b/src/main/java/br/com/ciaf/admin/controllers/fiscal/EmitNfce.java
+index 7d88eb8..42d6bad 100644
+--- a/src/main/java/br/com/ciaf/admin/controllers/fiscal/EmitNfce.java
++++ b/src/main/java/br/com/ciaf/admin/controllers/fiscal/EmitNfce.java
+@@ -1,10 +1,13 @@
+ package br.com.ciaf.admin.controllers.fiscal;
+
++import br.com.ciaf.admin.config.multitenant.TenantContext;
+ import br.com.ciaf.admin.dtos.fiscal.DadosNfeDto;
+ import br.com.ciaf.admin.entities.Emitente;
+ import br.com.ciaf.admin.entities.fiscal.*;
+ import br.com.ciaf.admin.repositories.EmitenteRepository;
+ import br.com.ciaf.admin.repositories.NfceRepository;
++import br.com.ciaf.admin.services.EmitenteServices;
++import br.com.ciaf.admin.services.NfceService;
+ import br.com.swconsultoria.certificado.Certificado;
+ import br.com.swconsultoria.certificado.CertificadoService;
+ import br.com.swconsultoria.certificado.exception.CertificadoException;
+@@ -53,20 +56,21 @@ public class EmitNfce {
+     private static String returnToMessage;
+     private static LocalDateTime dataEmissao;
+     private static Double vBCIBSCBSTot;
+-    private final NfceRepository repository;
++    private final NfceService service;
+
+-    private final EmitenteRepository emitenteRepository;
++    private final EmitenteServices emitenteServices;
+
+-    public EmitNfce(NfceRepository repository, EmitenteRepository emitenteRepository) {
+-        this.repository = repository;
+-        this.emitenteRepository = emitenteRepository;
++    public EmitNfce(EmitenteServices emitenteServices, NfceService service) {
++        this.service = service;
++        this.emitenteServices = emitenteServices;
+     }
+
+     @CrossOrigin
+     @PostMapping("/{id}")
+     public Optional<NotasStatus> emitirNfce(@PathVariable Long id, @RequestBody DadosNFCe dadosDaNota) {
+-        Emitente emitente = emitenteRepository.findById(id).orElseThrow();
+-        String password = emitenteRepository.getPassword(id);
++        String tenantDaRequest = TenantContext.getCurrentTenant();
++        Emitente emitente = emitenteServices.buscarEmitenteNoMaster(id);
++        String password = emitenteServices.buscarSenhaCertNoMaster(id);
+         if (password != null &&
+                 !password.isEmpty() &&
+                 emitente.getEmit_cnpj() != null &&
+@@ -160,13 +164,13 @@ public class EmitNfce {
+                 String xmlFinal;
+                 returnStatus = retorno.getProtNFe().getInfProt().getCStat();
+                 returnToMessage = retorno.getProtNFe().getInfProt().getXMotivo();
+-                if(returnStatus.equals("100")) {
+-                    NotasFiscaisConsumidor updateInvoice = repository.findByNumber(numeroNFCe);
+-                    updateInvoice.setStatus("AUTORIZADA");
+-                    updateInvoice.setChave(chaveUtil.getChaveNF());
+-                    updateInvoice.setPath(pathPdf);
+-                    updateInvoice.setData(dataFormatada);
+-                    repository.save(updateInvoice);
++                if(returnStatus.equals("100")) { service.marcarComoAutorizada(
++                        tenantDaRequest,
++                        numeroNFCe,
++                        chaveUtil.getChaveNF(),
++                        pathPdf,
++                        dataFormatada
++                );
+ //                efetuarImpressaoNFe(xmlFinal, qrCode, dadosDaNota);
+                     RetornoUtil.validaSincrono(retorno);
+                     System.out.println();
+@@ -364,6 +368,7 @@ private ConfiguracoesNfe criarConfiguracoes(String password, String certPath, St
+         emit.setIE(emitente.getEmit_IE());
+         emit.setCRT(dadosNFCe.getEmit_CRT());
+         TEnderEmi enderecoEmitente = new TEnderEmi();
++        System.out.println(dadosNFCe.getEmit_XLgr() + " - " + dadosNFCe.getEmit_Nro());
+         enderecoEmitente.setXLgr(dadosNFCe.getEmit_XLgr());
+         enderecoEmitente.setNro(dadosNFCe.getEmit_Nro());
+         enderecoEmitente.setXCpl(dadosNFCe.getEmit_XCpl());
+@@ -396,15 +401,17 @@ private ConfiguracoesNfe criarConfiguracoes(String password, String certPath, St
+                 dest.setXNome(dadosDaNota.getDest_XNome());
+             }
+         }
+-        if(!dadosDaNota.getDest_CNPJ().isEmpty() || !dadosDaNota.getDest_CNPJ().isBlank()){
++        if( dadosDaNota.getDest_CNPJ() != null && !dadosDaNota.getDest_CNPJ().isEmpty() && !dadosDaNota.getDest_CNPJ().isBlank()){
+             dest.setCNPJ(dadosDaNota.getDest_CNPJ());
+-            if(cnpj.equals("5182162520022")){
+-                dest.setXNome("NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL");
+-            }else{
++
++        }
++        if(cnpj.equals("5182162520022")){
++            dest.setXNome("NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL");
++        }else{
++            if(checkOnlyIfNull(dadosDaNota.getDest_XNome())) {
+                 dest.setXNome(dadosDaNota.getDest_XNome());
+             }
+         }
+-
+         TEndereco enderDest = new TEndereco();
+         if(checkOnlyIfNull(dadosDaNota.getDest_XLgr())){
+             enderDest.setXLgr(dadosDaNota.getDest_XLgr());
+@@ -644,7 +651,7 @@ private ConfiguracoesNfe criarConfiguracoes(String password, String certPath, St
+             Double vCbs = (Double.parseDouble(vbc) * 0.9) / 100;
+             Double vIbs = (Double.parseDouble(vbc) * 0.1) / 100;
+             TCIBS gibscbs = new TCIBS();
+-            System.out.println(vCbs + " - " + vIbs);
++//            System.out.println(vCbs valor CBS + " - " + vIbs);
+             TCIBS.GIBSMun gibsMun = new TCIBS.GIBSMun();
+             TCIBS.GIBSUF gibsuf = new TCIBS.GIBSUF();
+             TTribRegular tributoCBSRegular = new TTribRegular();
+diff --git a/src/main/java/br/com/ciaf/admin/controllers/fiscal/EmitNfe.java b/src/main/java/br/com/ciaf/admin/controllers/fiscal/EmitNfe.java
+index 623b67c..957ad5e 100644
+--- a/src/main/java/br/com/ciaf/admin/controllers/fiscal/EmitNfe.java
++++ b/src/main/java/br/com/ciaf/admin/controllers/fiscal/EmitNfe.java
+@@ -902,7 +902,7 @@ public class EmitNfe {
+         produto.setIndTot(myproduto.getProd_IndTot());
+         produto.setUTrib(myproduto.getProd_UTrib());
+         produto.setQTrib(myproduto.getProd_QTrib());
+-        if (myproduto.getProd_vFrete() != null && !myproduto.getProd_vFrete().isEmpty()) {
++        if (myproduto.getProd_vFrete() != null && !myproduto.getProd_vFrete().equals("0.00") && !myproduto.getProd_vFrete().isEmpty()) {
+             produto.setVFrete(myproduto.getProd_vFrete());
+         }
+
+diff --git a/src/main/java/br/com/ciaf/admin/services/EmitenteServices.java b/src/main/java/br/com/ciaf/admin/services/EmitenteServices.java
+index 4a0b431..9d420a7 100644
+--- a/src/main/java/br/com/ciaf/admin/services/EmitenteServices.java
++++ b/src/main/java/br/com/ciaf/admin/services/EmitenteServices.java
+@@ -5,6 +5,7 @@ import java.time.LocalDate;
+ import java.util.List;
+ import java.util.Optional;
+
++import br.com.ciaf.admin.config.multitenant.TenantContext;
+ import br.com.ciaf.admin.entities.CondicaoPg;
+ import br.com.ciaf.admin.repositories.CondicaoPgRepository;
+ import org.springframework.beans.factory.annotation.Autowired;
+@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
+ import br.com.ciaf.admin.entities.Emitente;
+ import br.com.ciaf.admin.exception.ResourceNotFoundException;
+ import br.com.ciaf.admin.repositories.EmitenteRepository;
++import org.springframework.transaction.annotation.Propagation;
+ import org.springframework.transaction.annotation.Transactional;
++import org.springframework.transaction.support.TransactionTemplate;
+
+ @Service
+ public class EmitenteServices {
+@@ -22,11 +25,53 @@ public class EmitenteServices {
+
+        private final EmitenteRepository repository;
+        private final CondicaoPgRepository cPgrepository;
++       private final TransactionTemplate transactionTemplate;
+
+-    public EmitenteServices(EmitenteRepository repository, CondicaoPgRepository cPgrepository) {
++    public EmitenteServices(EmitenteRepository repository, CondicaoPgRepository cPgrepository, TransactionTemplate transactionTemplate) {
+         this.repository = repository;
+         this.cPgrepository = cPgrepository;
++        this.transactionTemplate = transactionTemplate;
+     }
++       public Emitente buscarEmitenteNoMaster(Long id) {
++               String previous = TenantContext.getCurrentTenant();
++               TenantContext.setCurrentTenant(TenantContext.DEFAULT_TENANT);
++               try {
++                       return buscarEmitenteInNewTransaction(id);
++               } finally {
++                       TenantContext.setCurrentTenant(previous);
++               }
++       }
++
++       @Transactional(propagation = Propagation.REQUIRES_NEW)
++    public Emitente buscarEmitenteInNewTransaction(Long id) {
++               return repository.findById(id).orElseThrow();
++       }
++
++//     public Emitente buscarEmitenteNoMaster(Long id) {
++//             String previous = TenantContext.getCurrentTenant();
++//             try {
++//                     TenantContext.setCurrentTenant(TenantContext.DEFAULT_TENANT);
++//                     Optional<Emitente> emitente = repository.findById(id);
++//                     System.out.println(emitente.orElseThrow().getInscricaoMunicipal());
++//                     TenantContext.setCurrentTenant(previous);
++//                     return emitente.orElseThrow();
++//             }catch (RuntimeException e){
++//                     System.out.println(e.getMessage());
++//                     return null;
++//             }
++//
++//     }
++
++       public String buscarSenhaCertNoMaster(Long id) {
++               String previous = TenantContext.getCurrentTenant();
++               TenantContext.setCurrentTenant(TenantContext.DEFAULT_TENANT);
++               try {
++                       return repository.getPassword(id);
++               } finally {
++                       TenantContext.setCurrentTenant(previous);
++               }
++       }
++
+        // @Scheduled(cron = "0 * * * * ?") // run EVERY MINUTE to test
+        @Scheduled(cron = "0 0 0 * * ?") // Runs daily at midnight
+        public void checkPaymentAlerts() {
+diff --git a/src/main/java/br/com/ciaf/admin/services/NfceService.java b/src/main/java/br/com/ciaf/admin/services/NfceService.java
+index b896223..75d540c 100644
+--- a/src/main/java/br/com/ciaf/admin/services/NfceService.java
++++ b/src/main/java/br/com/ciaf/admin/services/NfceService.java
+@@ -1,5 +1,7 @@
+ package br.com.ciaf.admin.services;
+
++import br.com.ciaf.admin.config.multitenant.TenantContext;
++import org.springframework.transaction.annotation.Propagation;
+ import br.com.ciaf.admin.dtos.DeleteNotaDto;
+ import br.com.ciaf.admin.dtos.NotaFiscalDto;
+ import br.com.ciaf.admin.entities.Movimentacao;
+@@ -37,7 +39,21 @@ public class NfceService extends GeralService {
+         this.productRepository = productRepository;
+         this.formaPagamentoNfceService = formaPagamentoNfceService;
+         this.movimentacaoServices = movimentacaoServices;
++    }
+
++    public void marcarComoAutorizada(String tenantSchema, int numero, String chave, String pathPdf, String dataFormatada) {
++        String previous = TenantContext.getCurrentTenant();
++        TenantContext.setCurrentTenant(tenantSchema);
++        try {
++            NotasFiscaisConsumidor nota = repository.findByNumber(numero);
++            nota.setStatus("AUTORIZADA");
++            nota.setChave(chave);
++            nota.setPath(pathPdf);
++            nota.setData(dataFormatada);
++            repository.save(nota);
++        } finally {
++            TenantContext.setCurrentTenant(previous);
++        }
+     }
+
+     @PersistenceContext
+diff --git a/src/main/java/br/com/ciaf/admin/services/NotasFiscaisService.java b/src/main/java/br/com/ciaf/admin/services/NotasFiscaisService.java
+index 7556b9b..14c2436 100644
+--- a/src/main/java/br/com/ciaf/admin/services/NotasFiscaisService.java
++++ b/src/main/java/br/com/ciaf/admin/services/NotasFiscaisService.java
+@@ -121,10 +121,11 @@ public class NotasFiscaisService extends GeralService{
+     @Transactional
+     public void updateInEmit(Long id, String chave, String path){
+         NotasFiscais nota = repository.getById(id);
+-        nota.setStatus("AUTORIZADA");
+-        nota.setChave(chave);
+-        nota.setPath(path);
+-        repository.save(nota);
++        System.out.println(nota.getNumber() + " - ");
++//        nota.setStatus("AUTORIZADA");
++//        nota.setChave(chave);
++//        nota.setPath(path);
++//        repository.save(nota);
+     }
+     @Transactional
+     public void deleteItem(Long id, NotaFiscalDto notaFiscal) {

@@ -550,8 +550,8 @@ public class EmitNfe {
         TInfRespTec respTec = new TInfRespTec();
         respTec.setCNPJ("03054280000109");
         respTec.setXContato("Ciaf Soluções em Software");
-        respTec.setEmail("gilvan@ciaf.com.br");
-        respTec.setFone("35984384286");
+        respTec.setEmail("suporte@ciaf.com.br");
+        respTec.setFone("35999894181");
         return respTec;
     }
 

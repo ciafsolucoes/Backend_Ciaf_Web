@@ -34,3 +34,12 @@ No GitHub (repo id_api_mutitenant → Settings → Secrets and variables → Act
 Variáveis opcionais: `VPS_PASTA`, `FRONT_PASTA`, `FRONT_BRANCH`.
 
 Publicar: `git push origin main:docker` ou `git tag -a v0.1.0 -m "..." && git push origin v0.1.0`.
+
+## Migrar o MySQL que já roda na VPS (sem perder dados)
+
+Na VPS, dentro de `id_api_mutitenant`, com o `.env` preenchido:
+
+    bash deploy/migrar-mysql.sh
+
+Ele pede a senha root do MySQL antigo, faz backup em `~/backup-mysql-antigo-*.sql`, sobe o Ciaf Web,
+restaura os dados e compara a quantidade de tabelas. Não altera o MySQL antigo.

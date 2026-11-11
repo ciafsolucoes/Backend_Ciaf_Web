@@ -6,8 +6,8 @@ Estrutura esperada na VPS (as duas pastas lado a lado):
     ~/ciaf/front_one           (frontend)
 
 1. DNS: aponte `WEB_DOMAIN` e `API_DOMAIN` (registro A) para o IP da VPS.
-2. Firewall: libere apenas 22, 80 e 443.
-3. Na pasta id_api_mutitenant: `cp deploy/.env.example .env` e edite.
+2. A VPS usa o nginx do host (80/443): copie deploy/nginx/ciafweb.conf para /etc/nginx/conf.d/, troque SEU_SITE e SUA_API, `nginx -t && systemctl reload nginx` e depois `certbot --nginx -d SEU_SITE -d SUA_API --redirect`. O front sai em 127.0.0.1:13000 e o backend em 127.0.0.1:18081.
+3. Na pasta id_api_mutitenant: `cp deploy/.env.example .env` e edite (API_DOMAIN, JWT_SIGNING_KEY, MAIL_PASSWORD).
 4. `docker compose -f docker-compose.prod.yml up -d --build`
 5. Acompanhar: `docker compose -f docker-compose.prod.yml logs -f backend`
    (o backend leva ~30s; o Caddy emite o HTTPS sozinho).

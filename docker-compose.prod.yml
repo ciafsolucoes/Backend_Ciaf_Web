@@ -10,7 +10,9 @@ services:
       MYSQL_ROOT_PASSWORD: gr007879   # o codigo (AuthController) usa esta senha fixa
       MYSQL_DATABASE: ciaf_id
       TZ: America/Sao_Paulo
-    # Sem "ports": MySQL e backend NAO ficam expostos na internet; so o Caddy (80/443)
+    # O nginx da VPS (80/443) faz o HTTPS e encaminha para estas portas locais. O MySQL (3306) NAO e publicado.
+    ports:
+      - "127.0.0.1:18081:8081"   # backend (compartilha a rede deste container)
     volumes:
       - ciaf-mysql:/var/lib/mysql
       - ./my_sqls/create_dbs.sql:/docker-entrypoint-initdb.d/01-create_dbs.sql:ro
@@ -57,28 +59,10 @@ services:
       args:
         API_URL: https://${API_DOMAIN:?defina API_DOMAIN no .env}
     container_name: ciaf-web-frontend
-    restart: always
-
-  caddy:
-    image: caddy:2
-    container_name: ciaf-web-caddy
-    restart: always
     ports:
-      - "80:80"
-      - "443:443"
-    environment:
-      WEB_DOMAIN: ${WEB_DOMAIN:?defina WEB_DOMAIN no .env}
-      API_DOMAIN: ${API_DOMAIN}
-    volumes:
-      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy-data:/data
-      - caddy-config:/config
-    depends_on:
-      - frontend
-      - backend
+      - "127.0.0.1:13000:80"
+    restart: always
 
 volumes:
   ciaf-mysql:
   ciaf-files:
-  caddy-data:
-  caddy-config:

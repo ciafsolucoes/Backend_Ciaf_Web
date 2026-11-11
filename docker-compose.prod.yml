@@ -41,6 +41,9 @@ services:
       JAVA_TOOL_OPTIONS: -Xmx768m
     volumes:
       - ciaf-files:/data/ciaf
+      # PDFs (orcamentos, relatorios, danfes) gravados em /var/www/ciafonline.com.br/...
+      # ficam no host; o nginx (location /reports_N/) serve para o navegador
+      - /var/www/ciafonline.com.br:/var/www/ciafonline.com.br
 
   seed:
     image: mysql:8.0

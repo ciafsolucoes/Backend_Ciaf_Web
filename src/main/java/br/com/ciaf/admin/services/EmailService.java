@@ -41,7 +41,7 @@ public class EmailService {
             mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
             mimeMessage.setText(text);
             mimeMessage.setSubject(subject);
-			mimeMessage.setFrom("contato@ciaf.com.br");
+			mimeMessage.setFrom("financeiro@ciaf.com.br");
 
             MimeBodyPart attachPart = new MimeBodyPart();
             attachPart.attachFile(fileToAttach);
@@ -74,7 +74,7 @@ public class EmailService {
             if(emitente.getEmit_email() != null) {
                 mimeMessage.setFrom(emitente.getEmit_email());
             }else{
-                mimeMessage.setFrom("contato@ciaf.com.br");
+                mimeMessage.setFrom("financeiro@ciaf.com.br");
             }
 
             MimeBodyPart attachPart = new MimeBodyPart();
@@ -103,7 +103,7 @@ public class EmailService {
             mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
             mimeMessage.setText(text);
             mimeMessage.setSubject(subject);
-			mimeMessage.setFrom("contato@ciaf.com.br");
+			mimeMessage.setFrom("financeiro@ciaf.com.br");
 
             mailSender.send(mimeMessage);
 

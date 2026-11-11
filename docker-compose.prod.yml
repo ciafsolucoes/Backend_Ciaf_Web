@@ -36,6 +36,7 @@ services:
       JWT_SIGNING_KEY: ${JWT_SIGNING_KEY:?defina JWT_SIGNING_KEY no .env}
       SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD:?defina MAIL_PASSWORD no .env}
       APPLICATION_DISCO_RAIZ: /data/ciaf/
+      APP_CORS_ORIGINS: ${APP_CORS_ORIGINS:-}
       JAVA_TOOL_OPTIONS: -Xmx768m
     volumes:
       - ciaf-files:/data/ciaf

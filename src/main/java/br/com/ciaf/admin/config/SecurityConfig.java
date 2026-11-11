@@ -27,8 +27,10 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 
 @EnableWebSecurity
 @Configuration
@@ -134,9 +136,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new SessionRegistryImpl();
     }
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    CorsConfigurationSource corsConfigurationSource(@Value("${app.cors.origins:}") String extraOrigins) {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://ciafonline.com.br", "http://127.0.0.1:8082/"));
+        List<String> origins = new ArrayList<>(Arrays.asList("http://localhost:3000","https://ciafonline.com.br", "http://127.0.0.1:8082/"));
+        // Origens extras (separadas por virgula) via variavel APP_CORS_ORIGINS, ex.: https://ciafweb.ciafonline.com.br
+        for (String o : extraOrigins.split(",")) { if (!o.isBlank()) origins.add(o.trim()); }
+        configuration.setAllowedOrigins(origins);
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","PATCH","DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

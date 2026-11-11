@@ -1,0 +1,82 @@
+# Atualiza o Ciaf Web (backend + front + banco) na VPS via Docker a cada versão nova (tag v*, ex.: git tag -a v0.1.0 && git push origin v0.1.0),
+# a cada push no branch `docker`, ou pelo botão "Run workflow".
+# Na VPS: git fetch + reset do backend (esta pasta) e do front, rebuild dos containers e limpeza das imagens antigas.
+#
+# Segredos (Settings → Secrets and variables → Actions):
+#   VPS_HOST     IP ou nome da VPS
+#   VPS_USER     usuário do SSH (ex.: root)
+#   VPS_SSH_KEY  chave PRIVADA cuja .pub está no ~/.ssh/authorized_keys da VPS (texto BEGIN…END ou base64 -w0 numa linha)
+# Variáveis opcionais (Variables):
+#   VPS_PASTA     pasta do backend na VPS   (padrão /opt/ciaf-web/id_api_mutitenant)
+#   FRONT_PASTA   pasta do front na VPS     (padrão /opt/ciaf-web/front_one)
+#   FRONT_BRANCH  branch do front a publicar (padrão main)
+name: Deploy VPS
+
+on:
+  push:
+    branches: [docker]
+    tags: ["v*"]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: false   # nunca interrompe um deploy no meio
+
+jobs:
+  deploy:
+    name: Atualizar containers na VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      REF: ${{ github.ref_name }}
+      TIPO: ${{ github.ref_type }}
+      PASTA: ${{ vars.VPS_PASTA || '/opt/ciaf-web/id_api_mutitenant' }}
+      FRONT_PASTA: ${{ vars.FRONT_PASTA || '/opt/ciaf-web/front_one' }}
+      FRONT_BRANCH: ${{ vars.FRONT_BRANCH || 'main' }}
+    steps:
+      - name: Preparar chave SSH
+        env:
+          CHAVE: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          if printf '%s' "$CHAVE" | grep -q 'BEGIN'; then
+            printf '%s\n' "$CHAVE" | tr -d '\r' > ~/.ssh/id_deploy
+          else
+            printf '%s' "$CHAVE" | tr -d '\r\n ' | base64 -d > ~/.ssh/id_deploy
+          fi
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keygen -y -f ~/.ssh/id_deploy > /dev/null || { echo "::error::VPS_SSH_KEY inválida."; exit 1; }
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Atualizar e reconstruir
+        run: |
+          ssh -i ~/.ssh/id_deploy -o BatchMode=yes "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+            "REF='$REF' TIPO='$TIPO' PASTA='$PASTA' FRONT_PASTA='$FRONT_PASTA' FRONT_BRANCH='$FRONT_BRANCH' bash -s" <<'SCRIPT'
+          set -euo pipefail
+          # Backend: o .env não está no git (fica intacto); o resto é descartado.
+          cd "$PASTA"
+          if [ "$TIPO" = "tag" ]; then
+            git fetch --prune --force origin "refs/tags/$REF:refs/tags/$REF"
+            git reset --hard "refs/tags/$REF"
+          else
+            git fetch --prune origin "$REF"
+            git reset --hard "origin/$REF"
+          fi
+          echo "Backend: $REF ($(git log -1 --format='%h %s'))"
+          # Front
+          git -C "$FRONT_PASTA" fetch --prune origin "$FRONT_BRANCH"
+          git -C "$FRONT_PASTA" reset --hard "origin/$FRONT_BRANCH"
+          echo "Front: $FRONT_BRANCH ($(git -C "$FRONT_PASTA" log -1 --format='%h %s'))"
+
+          docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
+          docker image prune -f
+          # O backend leva ~30s para subir (Hibernate); espera até 3 min.
+          for i in $(seq 1 36); do
+            CODIGO=$(docker run --rm --network container:ciaf-web-db curlimages/curl -s -o /dev/null -w '%{http_code}' http://localhost:8081/ 2>/dev/null || true)
+            [ -n "$CODIGO" ] && [ "$CODIGO" != "000" ] && break
+            sleep 5
+          done
+          docker compose -f docker-compose.prod.yml ps
+          echo "Backend respondeu HTTP ${CODIGO:-000}"
+          [ "${CODIGO:-000}" != "000" ] || { docker compose -f docker-compose.prod.yml logs --tail 80 backend; exit 1; }
+          SCRIPT

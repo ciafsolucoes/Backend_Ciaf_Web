@@ -1,0 +1,84 @@
+name: ciaf-web
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: ciaf-web-db
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --innodb-strict-mode=0
+    environment:
+      MYSQL_ROOT_PASSWORD: gr007879   # o codigo (AuthController) usa esta senha fixa
+      MYSQL_DATABASE: ciaf_id
+      TZ: America/Sao_Paulo
+    # Sem "ports": MySQL e backend NAO ficam expostos na internet; so o Caddy (80/443)
+    volumes:
+      - ciaf-mysql:/var/lib/mysql
+      - ./my_sqls/create_dbs.sql:/docker-entrypoint-initdb.d/01-create_dbs.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pgr007879"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  backend:
+    build: .
+    container_name: ciaf-web-backend
+    restart: always
+    network_mode: "service:db"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/ciaf_id?useTimezone=true&serverTimezone=America/Sao_Paulo
+      SPRING_DATASOURCE_PASSWORD: gr007879
+      JWT_SIGNING_KEY: ${JWT_SIGNING_KEY:?defina JWT_SIGNING_KEY no .env}
+      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD:?defina MAIL_PASSWORD no .env}
+      APPLICATION_DISCO_RAIZ: /data/ciaf/
+      JAVA_TOOL_OPTIONS: -Xmx768m
+    volumes:
+      - ciaf-files:/data/ciaf
+
+  seed:
+    image: mysql:8.0
+    container_name: ciaf-web-seed
+    restart: "no"
+    depends_on:
+      - backend
+    command:
+      - sh
+      - -c
+      - |
+        until mysql -hdb -uroot -pgr007879 ciaf_id -e 'select 1 from role limit 1' >/dev/null 2>&1; do sleep 3; done
+        mysql -hdb -uroot -pgr007879 ciaf_id -e "INSERT IGNORE INTO role(id,name,description) VALUES (1,'USER','Usuario'),(2,'ADMIN','Administrador')"
+
+  frontend:
+    build:
+      context: ../front_one
+      args:
+        API_URL: https://${API_DOMAIN:?defina API_DOMAIN no .env}
+    container_name: ciaf-web-frontend
+    restart: always
+
+  caddy:
+    image: caddy:2
+    container_name: ciaf-web-caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      WEB_DOMAIN: ${WEB_DOMAIN:?defina WEB_DOMAIN no .env}
+      API_DOMAIN: ${API_DOMAIN}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - frontend
+      - backend
+
+volumes:
+  ciaf-mysql:
+  ciaf-files:
+  caddy-data:
+  caddy-config:

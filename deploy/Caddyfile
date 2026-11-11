@@ -1,0 +1,8 @@
+{$WEB_DOMAIN} {
+	reverse_proxy frontend:80
+}
+
+{$API_DOMAIN} {
+	# backend compartilha a rede do container db
+	reverse_proxy db:8081
+}

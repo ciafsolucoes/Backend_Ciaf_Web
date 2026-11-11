@@ -17,10 +17,10 @@ public interface EmitenteRepository extends BaseRepository<Emitente, Long> {
 //    boolean findLastEmitente();
 
     @Query(value = "SELECT is_active from emitente WHERE id =:id ", nativeQuery = true)
-    boolean findIfActiveEmitente(@Param("id") Long id);
+    Boolean findIfActiveEmitente(@Param("id") Long id);
 
     @Query(value = "SELECT is_paid from emitente WHERE id =:id ", nativeQuery = true)
-    boolean findIfPaidEmitente(@Param("id") Long id);
+    Boolean findIfPaidEmitente(@Param("id") Long id);
 
     @Query(value = "SELECT id from emitente ORDER BY id DESC LIMIT 1 ", nativeQuery = true)
     Long findLastEmitenteId();

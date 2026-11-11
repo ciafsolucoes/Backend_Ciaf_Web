@@ -64,10 +64,10 @@ public class EmitenteServices {
 	}
 
 	public Boolean findIfActiveId(Long id) {
-        return repository.findIfActiveEmitente(id);
+        return Boolean.TRUE.equals(repository.findIfActiveEmitente(id));
 	}
 	public Boolean findIfPaidId(Long id) {
-		return repository.findIfPaidEmitente(id);
+		return Boolean.TRUE.equals(repository.findIfPaidEmitente(id));
 	}
 	@Transactional
 	public boolean activateEmitente(Long id) {

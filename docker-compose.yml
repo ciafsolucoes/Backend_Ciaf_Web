@@ -3,7 +3,7 @@ name: ciaf-web
 services:
   db:
     image: mysql:8.0
-    container_name: ciaf-web-db
+    container_name: ciaf-web-mysql-db
     restart: unless-stopped
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --innodb-strict-mode=0
     environment:

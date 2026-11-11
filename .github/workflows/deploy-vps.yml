@@ -78,7 +78,7 @@ jobs:
           docker image prune -f
           # O backend leva ~30s para subir (Hibernate); espera até 3 min.
           for i in $(seq 1 36); do
-            CODIGO=$(docker run --rm --network container:ciaf-web-db curlimages/curl -s -o /dev/null -w '%{http_code}' http://localhost:8081/ 2>/dev/null || true)
+            CODIGO=$(docker run --rm --network container:ciaf-web-mysql-db curlimages/curl -s -o /dev/null -w '%{http_code}' http://localhost:8081/ 2>/dev/null || true)
             [ -n "$CODIGO" ] && [ "$CODIGO" != "000" ] && break
             sleep 5
           done

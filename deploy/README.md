@@ -12,7 +12,7 @@ Estrutura esperada na VPS (as duas pastas lado a lado):
 5. Acompanhar: `docker compose -f docker-compose.prod.yml logs -f backend`
    (o backend leva ~30s; o Caddy emite o HTTPS sozinho).
 6. Atualizar: `git pull` nas duas pastas e repetir o passo 4.
-7. Backup: `docker exec ciaf-web-db mysqldump -uroot -pgr007879 --all-databases > backup.sql`
+7. Backup: `docker exec ciaf-web-mysql-db mysqldump -uroot -pgr007879 --all-databases > backup.sql`
 
 ## Deploy automático pelo GitHub (igual ao ciaf-inter)
 

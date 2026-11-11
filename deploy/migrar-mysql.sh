@@ -5,7 +5,7 @@
 set -euo pipefail
 
 ANTIGO="${ANTIGO:-mysql_docker-db-1}"
-NOVO="ciaf-web-db"
+NOVO="ciaf-web-mysql-db"
 SENHA_NOVO="gr007879"
 COMPOSE="docker compose -f docker-compose.prod.yml"
 BACKUP="$HOME/backup-mysql-antigo-$(date +%Y%m%d-%H%M%S).sql"

@@ -39,6 +39,12 @@ jobs:
           CHAVE: ${{ secrets.VPS_SSH_KEY }}
         run: |
           install -m 700 -d ~/.ssh
+          # Diagnóstico seguro (não imprime a chave): tamanho e tipo do que foi colado.
+          echo "VPS_SSH_KEY: ${#CHAVE} caracteres; começa com '$(printf '%s' "$CHAVE" | head -c 10 | tr -c 'A-Za-z0-9 -' '?')'"
+          case "$CHAVE" in
+            ssh-*|ecdsa-*) echo "::error::VPS_SSH_KEY contém a chave PÚBLICA (ssh-...). Cadastre a PRIVADA (arquivo sem .pub, com BEGIN/END)."; exit 1;;
+            "") echo "::error::VPS_SSH_KEY está vazia."; exit 1;;
+          esac
           if printf '%s' "$CHAVE" | grep -q 'BEGIN'; then
             printf '%s\n' "$CHAVE" | tr -d '\r' > ~/.ssh/id_deploy
           else

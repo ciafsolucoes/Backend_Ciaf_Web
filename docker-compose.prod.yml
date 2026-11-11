@@ -38,6 +38,9 @@ services:
       SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD:?defina MAIL_PASSWORD no .env}
       APPLICATION_DISCO_RAIZ: /data/ciaf/
       APP_CORS_ORIGINS: ${APP_CORS_ORIGINS:-}
+      # aviso ao Ciaf Inter quando uma empresa se registra (vazio = desligado)
+      CIAFINTER_URL: ${CIAFINTER_URL:-https://site.ciaf.com.br}
+      CIAFINTER_API_KEY: ${CIAFINTER_API_KEY:-}
       JAVA_TOOL_OPTIONS: -Xmx768m
     volumes:
       - ciaf-files:/data/ciaf

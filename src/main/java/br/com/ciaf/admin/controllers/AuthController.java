@@ -9,6 +9,7 @@ import br.com.ciaf.admin.config.model.UserDto;
 import br.com.ciaf.admin.config.service.*;
 import br.com.ciaf.admin.services.EmailService;
 import br.com.ciaf.admin.services.EntityService;
+import br.com.ciaf.admin.services.CiafInterService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -47,6 +48,9 @@ import java.util.*;
 @RequestMapping("/auth")
 public class AuthController implements AuthenticationSuccessHandler {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
+
+    @Autowired
+    private CiafInterService ciafInterService;
     @Value("${jwt.header.string}")
     public String HEADER_STRING;
 
@@ -249,6 +253,10 @@ public class AuthController implements AuthenticationSuccessHandler {
         );
         try {
             userServiceImpl.createUserWithRoles(user);
+            // empresa nova (cadastro pelo Ciaf Web): avisa o Ciaf Inter em segundo plano; nunca atrapalha nem falha o registro
+            if (user != null && user.getEmpresa() != null && !user.getEmpresa().trim().isEmpty()) {
+                ciafInterService.registrarClienteNovo(user.getEmpresa(), user.getUsername(), user.getEmail(), user.getPhone(), user.getEmitente_id());
+            }
 //            log.info(
 //                    "POST /auth/register - usuario criado com sucesso: username={}, email={}",
 //                    user != null ? user.getUsername() : null,

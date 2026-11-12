@@ -23,6 +23,7 @@
        ciaf_id.products.salevalue,
        ciaf_id.budgetsitems.budget_id,
        ciaf_id.budgets.prazo,
+       ciaf_id.budgets.data_aprovacao,
        ciaf_id.budgets.id,
        ciaf_id.budgets.vendedor,
        coalesce(ciaf_id.budgets.client_cell, ' - ') AS client_cell,
@@ -123,6 +124,11 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 		<property name="com.jaspersoft.studio.field.name" value="budget_id"/>
 		<property name="com.jaspersoft.studio.field.label" value="budget_id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="budgetsitems"/>
+	</field>
+	<field name="data_aprovacao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="data_aprovacao"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_aprovacao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budgets"/>
 	</field>
 	<field name="prazo" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="prazo"/>
@@ -566,6 +572,18 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 		<element kind="staticText" uuid="be2e9bda-ab03-46fc-abf1-e42b1673ad9f" mode="Opaque" x="290" y="12" width="162" height="19" backcolor="rgba(255, 255, 255, 0.0)" fontSize="10.0" hTextAlign="Left" vTextAlign="Middle">
 			<text><![CDATA[Prazo Entrega:]]></text>
 		</element>
+		<element kind="textField" uuid="a1f5c0de-1111-4a2b-9c3d-0b6e7a8c9d01" x="368" y="12" width="184" height="19" fontSize="10.0" hTextAlign="Left" vTextAlign="Middle">
+			<expression><![CDATA[$F{prazo} != null ? $F{prazo} : ""]]></expression>
+			<box leftPadding="1"/>
+		</element>
+		<element kind="staticText" uuid="a1f5c0de-2222-4a2b-9c3d-0b6e7a8c9d02" mode="Opaque" x="388" y="34" width="72" height="20" backcolor="rgba(255, 255, 255, 0.0)" fontSize="10.0" hTextAlign="Left" vTextAlign="Middle">
+			<text><![CDATA[Aprovado em:]]></text>
+			<box leftPadding="3"/>
+		</element>
+		<element kind="textField" uuid="a1f5c0de-3333-4a2b-9c3d-0b6e7a8c9d03" x="460" y="34" width="94" height="20" fontSize="10.0" vTextAlign="Middle">
+			<expression><![CDATA[$F{data_aprovacao} != null ? $F{data_aprovacao} : ""]]></expression>
+			<box leftPadding="3"/>
+		</element>
 		<element kind="staticText" uuid="ed4e86de-3e5d-44bf-b997-8c16ccff4179" mode="Opaque" x="0" y="34" width="82" height="20" backcolor="rgba(255, 255, 255, 0.0)" fontSize="10.0" hTextAlign="Left" vTextAlign="Middle">
 			<text><![CDATA[Validade:]]></text>
 			<box leftPadding="4"/>
@@ -602,8 +620,8 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 		<element kind="rectangle" uuid="38fce53c-8dc5-4828-a537-073794f2e5d9" x="310" y="206" width="245" height="60" forecolor="#050214" backcolor="rgba(255, 255, 255, 0.0)">
 			<pen lineWidth="0.75"/>
 		</element>
-		<element kind="staticText" uuid="da52b417-35ac-49db-9126-019b5d3461a1" x="19" y="213" width="257" height="19" fontSize="11.0" bold="true" vTextAlign="Middle">
-			<text><![CDATA[DATA DA ENTREGA  ___/___/______]]></text>
+		<element kind="textField" uuid="da52b417-35ac-49db-9126-019b5d3461a1" x="19" y="213" width="257" height="19" fontSize="11.0" bold="true" vTextAlign="Middle">
+			<expression><![CDATA["DATA DA ENTREGA  " + ($F{prazo} != null && !$F{prazo}.trim().isEmpty() ? $F{prazo} : "___/___/______")]]></expression>
 		</element>
 		<element kind="staticText" uuid="f8563d1d-8ede-4de7-9ad8-8bba30bfda1d" x="21" y="237" width="255" height="22" fontSize="11.0" bold="true" vTextAlign="Middle">
 			<text><![CDATA[NOTA FISCAL N° ________________]]></text>

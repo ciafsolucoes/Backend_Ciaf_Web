@@ -338,7 +338,7 @@ public class JasperMultiTenantService2 {
         );
         JasperReport report = loadCompiledReport(reportName);
 
-        String originalQuery = report.getQuery().getText();
+        String originalQuery = queryOriginal(reportName, report);
         String rewrittenQuery = rewriteQueryForTenant(originalQuery, tenantSchema);
 //        System.out.println(rewrittenQuery+ " <= originalQuery -> " + tenantSchema);
         // sem fallback, só para debug:
@@ -413,6 +413,26 @@ public class JasperMultiTenantService2 {
     /**
      * Carrega stream do JRXML
      */
+    /**
+     * Consulta original do relatório. Orçamento: vem do .jrxml (o .jasper pré-compilado está desatualizado e não traz
+     * os campos/joins novos); os demais continuam usando a consulta do .jasper.
+     */
+    private String queryOriginal(String reportName, JasperReport report) {
+        String query = report.getQuery().getText();
+        if ("Orcamento".equals(reportName)) {
+            try (InputStream js = loadJRXMLStream(reportName)) {
+                if (js != null) {
+                    String xml = IOUtils.toString(js, StandardCharsets.UTF_8);
+                    Matcher qm = Pattern.compile("<query[^>]*>\\s*<!\\[CDATA\\[(.*?)\\]\\]>\\s*</query>", Pattern.DOTALL).matcher(xml);
+                    if (qm.find()) query = qm.group(1);
+                }
+            } catch (Exception e) {
+                logger.warn("Não foi possível ler a consulta do JRXML de '{}': {}", reportName, e.getMessage());
+            }
+        }
+        return query;
+    }
+
     private InputStream loadJRXMLStream(String reportName) {
         // Tentar várias localizações
         String[] locations = {
@@ -777,7 +797,7 @@ public class JasperMultiTenantService2 {
         JasperReport report = loadCompiledReport(reportName);
 
         // 2. Obter query e reescrever
-        String originalQuery = report.getQuery().getText();
+        String originalQuery = queryOriginal(reportName, report);
         String rewrittenQuery = rewriteQueryForTenant(originalQuery, tenantSchema);
 
         // 3. Executar query diretamente no banco

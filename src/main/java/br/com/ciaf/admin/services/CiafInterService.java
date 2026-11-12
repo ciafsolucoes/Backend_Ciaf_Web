@@ -72,7 +72,7 @@ public class CiafInterService {
             return;
         }
         try {
-            jdbc.execute("CREATE TABLE IF NOT EXISTS inter_cadastro_pendente ("
+            jdbc.execute("CREATE TABLE IF NOT EXISTS ciaf_id.inter_cadastro_pendente ("
                     + "id BIGINT AUTO_INCREMENT PRIMARY KEY,"
                     + "empresa VARCHAR(120) NOT NULL,"
                     + "usuario VARCHAR(42),"
@@ -131,10 +131,10 @@ public class CiafInterService {
 
     private Long guardarNaFila(String empresa, String usuario, String email, String telefone, Long emitenteId) {
         try {
-            jdbc.update("INSERT IGNORE INTO inter_cadastro_pendente (empresa, usuario, email, telefone, emitente_id) VALUES (?,?,?,?,?)",
+            jdbc.update("INSERT IGNORE INTO ciaf_id.inter_cadastro_pendente (empresa, usuario, email, telefone, emitente_id) VALUES (?,?,?,?,?)",
                     cortar(empresa, 120), cortar(usuario, 42), cortar(email, 120), cortar(telefone, 30), emitenteId);
             List<Long> ids = jdbc.queryForList(
-                    "SELECT id FROM inter_cadastro_pendente WHERE email = ? AND (emitente_id <=> ?) AND enviado = 0 AND descartado = 0 ORDER BY id DESC LIMIT 1",
+                    "SELECT id FROM ciaf_id.inter_cadastro_pendente WHERE email = ? AND (emitente_id <=> ?) AND enviado = 0 AND descartado = 0 ORDER BY id DESC LIMIT 1",
                     Long.class, cortar(email, 120), emitenteId);
             return ids.isEmpty() ? null : ids.get(0);
         } catch (Exception e) {
@@ -149,7 +149,7 @@ public class CiafInterService {
         if (!ligado()) return;
         try {
             List<Long> ids = jdbc.queryForList(
-                    "SELECT id FROM inter_cadastro_pendente WHERE enviado = 0 AND descartado = 0 AND tentativas < ? "
+                    "SELECT id FROM ciaf_id.inter_cadastro_pendente WHERE enviado = 0 AND descartado = 0 AND tentativas < ? "
                             + "AND proxima_tentativa <= NOW() ORDER BY id LIMIT 20",
                     Long.class, MAX_TENTATIVAS);
             for (Long id : ids) enviar(id);
@@ -162,7 +162,7 @@ public class CiafInterService {
         Map<String, Object> linha;
         try {
             List<Map<String, Object>> linhas = jdbc.queryForList(
-                    "SELECT empresa, usuario, email, telefone, emitente_id, tentativas FROM inter_cadastro_pendente WHERE id = ? AND enviado = 0 AND descartado = 0", id);
+                    "SELECT empresa, usuario, email, telefone, emitente_id, tentativas FROM ciaf_id.inter_cadastro_pendente WHERE id = ? AND enviado = 0 AND descartado = 0", id);
             if (linhas.isEmpty()) return;
             linha = linhas.get(0);
         } catch (Exception e) {
@@ -173,13 +173,13 @@ public class CiafInterService {
         try {
             postar((String) linha.get("empresa"), (String) linha.get("usuario"), (String) linha.get("email"),
                     (String) linha.get("telefone"), linha.get("emitente_id") == null ? null : ((Number) linha.get("emitente_id")).longValue());
-            jdbc.update("UPDATE inter_cadastro_pendente SET enviado = 1, enviado_em = NOW(), ultimo_erro = NULL WHERE id = ?", id);
+            jdbc.update("UPDATE ciaf_id.inter_cadastro_pendente SET enviado = 1, enviado_em = NOW(), ultimo_erro = NULL WHERE id = ?", id);
             log.info("Cliente novo avisado ao Ciaf Inter (aviso {})", id);
         } catch (HttpStatusCodeException e) {
             int status = e.getRawStatusCode();
             if (status == 400 || status == 422) {
                 // dado recusado pelo Inter: repetir não adianta
-                jdbc.update("UPDATE inter_cadastro_pendente SET descartado = 1, tentativas = ?, ultimo_erro = ? WHERE id = ?",
+                jdbc.update("UPDATE ciaf_id.inter_cadastro_pendente SET descartado = 1, tentativas = ?, ultimo_erro = ? WHERE id = ?",
                         tentativas + 1, cortar("Inter recusou os dados (HTTP " + status + ")", 255), id);
                 log.warn("Ciaf Inter recusou o aviso {} (HTTP {}); não será repetido", id, status);
             } else {
@@ -194,7 +194,7 @@ public class CiafInterService {
         // 5 min, 10, 20, 40... no máximo 6 horas entre tentativas
         long minutos = Math.min(360L, 5L * (1L << Math.min(tentativas, 10)));
         try {
-            jdbc.update("UPDATE inter_cadastro_pendente SET tentativas = ?, ultimo_erro = ?, proxima_tentativa = DATE_ADD(NOW(), INTERVAL ? MINUTE) WHERE id = ?",
+            jdbc.update("UPDATE ciaf_id.inter_cadastro_pendente SET tentativas = ?, ultimo_erro = ?, proxima_tentativa = DATE_ADD(NOW(), INTERVAL ? MINUTE) WHERE id = ?",
                     tentativas + 1, cortar(motivo, 255), minutos, id);
         } catch (Exception e) {
             log.warn("Não foi possível anotar a falha do aviso {}: {}", id, e.getMessage());

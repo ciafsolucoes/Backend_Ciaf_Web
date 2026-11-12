@@ -304,14 +304,14 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 		<element kind="staticText" uuid="249ceb1f-d595-464e-a554-c8edf23a42fb" mode="Opaque" x="380" y="4" width="120" height="21" forecolor="#151E82" backcolor="#EBEBEB" fontName="SansSerif" fontSize="10.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[ORÇAMENTO/PEDIDO:]]></text>
 		</element>
-		<element kind="textField" uuid="703dca8f-9737-47cb-88e9-92924bc4e83b" x="480" y="47" width="71" height="18" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="703dca8f-9737-47cb-88e9-92924bc4e83b" x="480" y="47" width="71" height="18" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{data}]]></expression>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 		</element>
-		<element kind="textField" uuid="7387b652-300d-4edc-b1e8-1289f048a644" x="500" y="4" width="51" height="21" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="7387b652-300d-4edc-b1e8-1289f048a644" x="500" y="4" width="51" height="21" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{nr_budget}]]></expression>
 		</element>
-		<element kind="textField" uuid="ce31693e-b67a-4c58-ab5f-4562337deab7" x="101" y="4" width="253" height="19" forecolor="#151E82" fontSize="11.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="ce31693e-b67a-4c58-ab5f-4562337deab7" x="101" y="4" width="253" height="19" forecolor="#151E82" fontSize="11.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
 			<expression><![CDATA[$F{emit_xnome}]]></expression>
 		</element>
 		<element kind="staticText" uuid="5ddd0d89-9f00-42d7-95df-08c890efd4e5" mode="Opaque" x="382" y="26" width="70" height="18" forecolor="#1F338C" backcolor="#EBEBEB" fontSize="12.0" hTextAlign="Left" vTextAlign="Middle">
@@ -319,7 +319,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<box leftPadding="3"/>
 		</element>
-		<element kind="textField" uuid="5b83fee7-2143-47d9-9a54-73800917b807" x="480" y="26" width="71" height="19" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="5b83fee7-2143-47d9-9a54-73800917b807" x="480" y="26" width="71" height="19" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{status}]]></expression>
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<box topPadding="5"/>
@@ -328,7 +328,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 			<text><![CDATA[Vendedor]]></text>
 			<box leftPadding="3"/>
 		</element>
-		<element kind="textField" uuid="8f765ee1-e174-4c9d-9bc3-1e244ff7649e" x="480" y="66" width="71" height="23" fontSize="11.0" hTextAlign="Center">
+		<element kind="textField" blankWhenNull="true" uuid="8f765ee1-e174-4c9d-9bc3-1e244ff7649e" x="480" y="66" width="71" height="23" fontSize="11.0" hTextAlign="Center">
 			<expression><![CDATA[$F{vendedor}]]></expression>
 			<box topPadding="5"/>
 		</element>
@@ -336,25 +336,25 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 		</element>
-		<element kind="textField" uuid="ded1bcb4-704c-494e-92c3-a0b06a8027ef" x="101" y="24" width="135" height="19" fontSize="9.0" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="ded1bcb4-704c-494e-92c3-a0b06a8027ef" x="101" y="24" width="135" height="19" fontSize="9.0" hTextAlign="Left" vTextAlign="Middle">
 			<expression><![CDATA[$F{emit_xlgr}]]></expression>
 			<box leftPadding="3"/>
 		</element>
-		<element kind="textField" uuid="f144b09a-8497-4b9c-ba59-f7bff9712f63" x="241" y="24" width="26" height="19" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="f144b09a-8497-4b9c-ba59-f7bff9712f63" x="241" y="24" width="26" height="19" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{emit_nro}]]></expression>
 		</element>
-		<element kind="textField" uuid="aec868c8-ecd3-464b-91c5-0a979f6318c2" x="101" y="44" width="66" height="21" fontSize="9.0" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="aec868c8-ecd3-464b-91c5-0a979f6318c2" x="101" y="44" width="66" height="21" fontSize="9.0" hTextAlign="Left" vTextAlign="Middle">
 			<expression><![CDATA[$F{emit_xbairro}]]></expression>
 			<box leftPadding="3"/>
 		</element>
-		<element kind="textField" uuid="3797cb2b-94e8-4470-b5d9-f4196e89d1ce" x="171" y="44" width="106" height="21" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="3797cb2b-94e8-4470-b5d9-f4196e89d1ce" x="171" y="44" width="106" height="21" hTextAlign="Left" vTextAlign="Middle">
 			<expression><![CDATA[$F{emit_xmun}]]></expression>
 			<box leftPadding="3"/>
 		</element>
-		<element kind="textField" uuid="ed0d8287-3e5d-492d-8f67-9dd0b5e4878d" x="101" y="69" width="86" height="16" fontSize="9.0" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="ed0d8287-3e5d-492d-8f67-9dd0b5e4878d" x="101" y="69" width="86" height="16" fontSize="9.0" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{phonenumber}  != null  ? $F{phonenumber} : ""]]></expression>
 		</element>
-		<element kind="textField" uuid="2117fcc7-b564-465b-9301-505faef8bfec" x="190" y="69" width="87" height="16" fontSize="9.0" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="2117fcc7-b564-465b-9301-505faef8bfec" x="190" y="69" width="87" height="16" fontSize="9.0" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{cellnumber} != null ? $F{cellnumber} : ""]]></expression>
 		</element>
 	</title>
@@ -368,11 +368,11 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 		<element kind="staticText" uuid="304a8e4d-f3b7-40af-923e-199beca72f2c" mode="Opaque" x="4" y="33" width="66" height="13" backcolor="#EBEBEB" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[Endereço:]]></text>
 		</element>
-		<element kind="textField" uuid="69f5aac4-5ca2-46b5-89ae-ff427097abbc" x="87" y="10" width="293" height="20" hTextAlign="Left">
+		<element kind="textField" blankWhenNull="true" uuid="69f5aac4-5ca2-46b5-89ae-ff427097abbc" x="87" y="10" width="293" height="20" hTextAlign="Left">
 			<expression><![CDATA[$F{client}]]></expression>
 			<box topPadding="5" leftPadding="3"/>
 		</element>
-		<element kind="textField" uuid="8be9242b-07f1-4e58-aff0-d32c315be75d" x="440" y="33" width="110" height="17" hTextAlign="Center">
+		<element kind="textField" blankWhenNull="true" uuid="8be9242b-07f1-4e58-aff0-d32c315be75d" x="440" y="33" width="110" height="17" hTextAlign="Center">
 			<expression><![CDATA[$F{client_cell}]]></expression>
 			<box topPadding="5"/>
 		</element>
@@ -395,28 +395,28 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 		<element kind="staticText" uuid="84faa01c-3d56-4594-930a-e44b67913ec7" mode="Opaque" x="1" y="0" width="80" height="10" forecolor="#030382" backcolor="rgba(255, 255, 255, 0.0)" fontSize="8.0" hTextAlign="Left" vTextAlign="Middle">
 			<text><![CDATA[Dados do Cliente:]]></text>
 		</element>
-		<element kind="textField" uuid="f28ca0e9-48dc-4f2c-9e8d-4a1a60528a26" x="84" y="33" width="236" height="13" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="f28ca0e9-48dc-4f2c-9e8d-4a1a60528a26" x="84" y="33" width="236" height="13" hTextAlign="Left" vTextAlign="Middle">
 			<expression><![CDATA[$F{address}]]></expression>
 			<box leftPadding="3"/>
 		</element>
-		<element kind="textField" uuid="7f9a6c8e-2f95-4632-a3f2-1a51760cb28c" x="440" y="54" width="110" height="12" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="7f9a6c8e-2f95-4632-a3f2-1a51760cb28c" x="440" y="54" width="110" height="12" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{cpf_cnpj}]]></expression>
 		</element>
-		<element kind="textField" uuid="e31bd7cb-c97a-46f3-807c-b49c839e2dfe" x="440" y="16" width="110" height="13" backcolor="rgba(255, 255, 255, 0.0)" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="e31bd7cb-c97a-46f3-807c-b49c839e2dfe" x="440" y="16" width="110" height="13" backcolor="rgba(255, 255, 255, 0.0)" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{client_id}]]></expression>
 		</element>
-		<element kind="textField" uuid="ab3dd2f3-3859-44ed-8275-e9ff6ed8238d" x="85" y="50" width="159" height="20" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="ab3dd2f3-3859-44ed-8275-e9ff6ed8238d" x="85" y="50" width="159" height="20" hTextAlign="Left" vTextAlign="Middle">
 			<expression><![CDATA[$F{city}]]></expression>
 			<box leftPadding="3"/>
 		</element>
-		<element kind="textField" uuid="9664a67e-6670-44ba-a61e-fabe2c0f4037" x="244" y="50" width="32" height="17" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="9664a67e-6670-44ba-a61e-fabe2c0f4037" x="244" y="50" width="32" height="17" hTextAlign="Left" vTextAlign="Middle">
 			<expression><![CDATA[$F{state}]]></expression>
 			<box leftPadding="2"/>
 		</element>
-		<element kind="textField" uuid="8ccbd7e5-cebd-4af6-b57b-fd3f905bc4e5" x="290" y="50" width="60" height="17" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="8ccbd7e5-cebd-4af6-b57b-fd3f905bc4e5" x="290" y="50" width="60" height="17" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{cep}]]></expression>
 		</element>
-		<element kind="textField" uuid="aaa40d2a-9b76-4680-9a2a-fd4ffff7394c" x="330" y="33" width="50" height="13" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="aaa40d2a-9b76-4680-9a2a-fd4ffff7394c" x="330" y="33" width="50" height="13" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{number}]]></expression>
 		</element>
 		<element kind="staticText" uuid="27f2d40e-45ee-47ca-9757-007b4f1d8cb4" mode="Opaque" x="320" y="33" width="20" height="13" backcolor="#EBEBEB" hTextAlign="Center" vTextAlign="Middle">
@@ -482,7 +482,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Prevent">
-			<element kind="textField" uuid="07e1a629-565a-4ccf-960b-d1e25fd2525f" x="420" y="2" width="135" height="16" forecolor="#1A1A1A" fontSize="8.0" pattern="¤ #,##0.##;¤-##0.##" hTextAlign="Center" vTextAlign="Bottom">
+			<element kind="textField" blankWhenNull="true" uuid="07e1a629-565a-4ccf-960b-d1e25fd2525f" x="420" y="2" width="135" height="16" forecolor="#1A1A1A" fontSize="8.0" pattern="¤ #,##0.##;¤-##0.##" hTextAlign="Center" vTextAlign="Bottom">
 				<expression><![CDATA["R$ " +  new java.text.DecimalFormat("#,##0.00").format($F{total_price} != null ? $F{total_price} : 0.0)
 ]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d97f3e02-6425-44b1-9882-1e58890131d6"/>
@@ -495,7 +495,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#02297D"/>
 				</box>
 			</element>
-			<element kind="textField" uuid="dfba6e47-e5f0-45b0-9e64-6fd14bc6fe0a" x="341" y="2" width="78" height="16" forecolor="#2D2F38" fontSize="8.0" pattern="¤ #,##0.00;¤-#,##0.00" hTextAlign="Center" vTextAlign="Bottom">
+			<element kind="textField" blankWhenNull="true" uuid="dfba6e47-e5f0-45b0-9e64-6fd14bc6fe0a" x="341" y="2" width="78" height="16" forecolor="#2D2F38" fontSize="8.0" pattern="¤ #,##0.00;¤-#,##0.00" hTextAlign="Center" vTextAlign="Bottom">
 				<expression><![CDATA[$F{prod_vun_com}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8bf111cd-734b-4a50-9e17-8b6bcd893d86"/>
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -507,7 +507,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#02297D"/>
 				</box>
 			</element>
-			<element kind="textField" uuid="9e2b33a7-27dd-47cc-97ed-7feff1369c39" x="87" y="2" width="253" height="16" forecolor="#292A30" fontSize="8.0" hTextAlign="Left" vTextAlign="Bottom">
+			<element kind="textField" blankWhenNull="true" uuid="9e2b33a7-27dd-47cc-97ed-7feff1369c39" x="87" y="2" width="253" height="16" forecolor="#292A30" fontSize="8.0" hTextAlign="Left" vTextAlign="Bottom">
 				<expression><![CDATA[$F{description}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e3a545c3-61d8-40f1-afee-39b520ac5580"/>
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -515,7 +515,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 					<pen lineColor="#02297D"/>
 				</box>
 			</element>
-			<element kind="textField" uuid="35fca0d8-0ce5-47b6-8078-acfd36317b14" x="0" y="2" width="87" height="16" fontSize="8.0" hTextAlign="Left" vTextAlign="Bottom">
+			<element kind="textField" blankWhenNull="true" uuid="35fca0d8-0ce5-47b6-8078-acfd36317b14" x="0" y="2" width="87" height="16" fontSize="8.0" hTextAlign="Left" vTextAlign="Bottom">
 				<expression><![CDATA[$F{prod_qcom}]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e63a87d6-9d78-42cc-ac2b-5b74a32eff9f"/>
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -541,7 +541,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 		<element kind="rectangle" uuid="2e97f1a6-d445-4ff9-87db-1b343547b590" x="1" y="73" width="369" height="133" forecolor="#170766" backcolor="rgba(255, 255, 255, 0.0)" radius="6">
 			<pen lineWidth="0.75"/>
 		</element>
-		<element kind="textField" uuid="8c4a82ef-e95b-49ee-bf30-839090341d42" x="0" y="74" width="340" height="128" forecolor="#313133" fontSize="9.7" hTextAlign="Left">
+		<element kind="textField" blankWhenNull="true" uuid="8c4a82ef-e95b-49ee-bf30-839090341d42" x="0" y="74" width="340" height="128" forecolor="#313133" fontSize="9.7" hTextAlign="Left">
 			<expression><![CDATA[$F{observacao} != null ? $F{observacao} : ""]]></expression>
 			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0a8764c6-bfad-4c0c-8403-cba0374bd22b"/>
 			<box topPadding="6" leftPadding="6" bottomPadding="4" rightPadding="4">
@@ -572,7 +572,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 		<element kind="staticText" uuid="be2e9bda-ab03-46fc-abf1-e42b1673ad9f" mode="Opaque" x="290" y="12" width="162" height="19" backcolor="rgba(255, 255, 255, 0.0)" fontSize="10.0" hTextAlign="Left" vTextAlign="Middle">
 			<text><![CDATA[Prazo Entrega:]]></text>
 		</element>
-		<element kind="textField" uuid="a1f5c0de-1111-4a2b-9c3d-0b6e7a8c9d01" x="368" y="12" width="184" height="19" fontSize="10.0" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="a1f5c0de-1111-4a2b-9c3d-0b6e7a8c9d01" x="368" y="12" width="184" height="19" fontSize="10.0" hTextAlign="Left" vTextAlign="Middle">
 			<expression><![CDATA[$F{prazo} != null ? $F{prazo} : ""]]></expression>
 			<box leftPadding="1"/>
 		</element>
@@ -580,7 +580,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 			<text><![CDATA[Aprovado em:]]></text>
 			<box leftPadding="3"/>
 		</element>
-		<element kind="textField" uuid="a1f5c0de-3333-4a2b-9c3d-0b6e7a8c9d03" x="460" y="34" width="94" height="20" fontSize="10.0" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="a1f5c0de-3333-4a2b-9c3d-0b6e7a8c9d03" x="460" y="34" width="94" height="20" fontSize="10.0" vTextAlign="Middle">
 			<expression><![CDATA[$F{data_aprovacao} != null ? $F{data_aprovacao} : ""]]></expression>
 			<box leftPadding="3"/>
 		</element>
@@ -588,7 +588,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 			<text><![CDATA[Validade:]]></text>
 			<box leftPadding="4"/>
 		</element>
-		<element kind="textField" uuid="dbd9667a-2540-4cff-895c-525124e35bdd" x="83" y="34" width="97" height="20" backcolor="rgba(255, 255, 255, 0.0)" fontSize="10.0" hTextAlign="Left">
+		<element kind="textField" blankWhenNull="true" uuid="dbd9667a-2540-4cff-895c-525124e35bdd" x="83" y="34" width="97" height="20" backcolor="rgba(255, 255, 255, 0.0)" fontSize="10.0" hTextAlign="Left">
 			<expression><![CDATA[$F{validade}]]></expression>
 			<box topPadding="5" leftPadding="1"/>
 		</element>
@@ -600,7 +600,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 			<text><![CDATA[Outras Informações:]]></text>
 			<box topPadding="0"/>
 		</element>
-		<element kind="textField" uuid="e96563c5-3da4-4008-8bbc-a97b6528fff8" x="87" y="12" width="203" height="19" backcolor="rgba(255, 255, 255, 0.0)" fontSize="10.0" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="e96563c5-3da4-4008-8bbc-a97b6528fff8" x="87" y="12" width="203" height="19" backcolor="rgba(255, 255, 255, 0.0)" fontSize="10.0" hTextAlign="Left" vTextAlign="Middle">
 			<expression><![CDATA[$F{forma} != null ? $F{forma} : ""]]></expression>
 			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2fa1eca7-49bf-4071-9ca7-c7bf39d996e3"/>
 			<box leftPadding="1"/>
@@ -620,7 +620,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 		<element kind="rectangle" uuid="38fce53c-8dc5-4828-a537-073794f2e5d9" x="310" y="206" width="245" height="60" forecolor="#050214" backcolor="rgba(255, 255, 255, 0.0)">
 			<pen lineWidth="0.75"/>
 		</element>
-		<element kind="textField" uuid="da52b417-35ac-49db-9126-019b5d3461a1" x="19" y="213" width="257" height="19" fontSize="11.0" bold="true" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="da52b417-35ac-49db-9126-019b5d3461a1" x="19" y="213" width="257" height="19" fontSize="11.0" bold="true" vTextAlign="Middle">
 			<expression><![CDATA["DATA DA ENTREGA  " + ($F{prazo} != null && !$F{prazo}.trim().isEmpty() ? $F{prazo} : "___/___/______")]]></expression>
 		</element>
 		<element kind="staticText" uuid="f8563d1d-8ede-4de7-9ad8-8bba30bfda1d" x="21" y="237" width="255" height="22" fontSize="11.0" bold="true" vTextAlign="Middle">
@@ -637,7 +637,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 			<text><![CDATA[Aprovado por:]]></text>
 			<box leftPadding="3"/>
 		</element>
-		<element kind="textField" uuid="b1d4b11a-9308-4d47-864c-8d3b04ae84a8" x="270" y="34" width="114" height="20" fontSize="10.0" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="b1d4b11a-9308-4d47-864c-8d3b04ae84a8" x="270" y="34" width="114" height="20" fontSize="10.0" vTextAlign="Middle">
 			<expression><![CDATA[$F{aprovado_por}]]></expression>
 			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="00b7e3b1-2e99-4aad-a2e0-ebca03f35856"/>
 			<box leftPadding="3"/>
@@ -646,15 +646,15 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 		</element>
-		<element kind="textField" uuid="2fe57844-5192-4c1e-a501-14577cac4672" x="460" y="80" width="92" height="26" textAdjust="ScaleFont" pattern="¤#,##0.##;¤-#,##0.##" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="2fe57844-5192-4c1e-a501-14577cac4672" x="460" y="80" width="92" height="26" textAdjust="ScaleFont" pattern="¤#,##0.##;¤-#,##0.##" hTextAlign="Right" vTextAlign="Middle">
 			<expression><![CDATA["R$ " +  new java.text.DecimalFormat("#,##0.00").format($F{total_price} != null ? $F{total_price} : 0.0)]]></expression>
 			<box rightPadding="2"/>
 		</element>
-		<element kind="textField" uuid="3f38e30e-8e63-4d00-b47a-0f420548c989" x="459" y="170" width="93" height="28" fontSize="12.0" pattern="¤ #,##0.00;¤-#,##0.00" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="3f38e30e-8e63-4d00-b47a-0f420548c989" x="459" y="170" width="93" height="28" fontSize="12.0" pattern="¤ #,##0.00;¤-#,##0.00" hTextAlign="Right" vTextAlign="Middle">
 			<expression><![CDATA[$F{desconto} != null ? $V{total_price3} - $F{desconto} : $V{total_price3}
 ]]></expression>
 		</element>
-		<element kind="textField" uuid="1cbd9e2d-4edf-4c64-aec9-ad2f4f525c7d" x="460" y="106" width="94" height="25" pattern="¤ #,##0.00;¤-#,##0.00" hTextAlign="Right" vTextAlign="Middle">
+		<element kind="textField" blankWhenNull="true" uuid="1cbd9e2d-4edf-4c64-aec9-ad2f4f525c7d" x="460" y="106" width="94" height="25" pattern="¤ #,##0.00;¤-#,##0.00" hTextAlign="Right" vTextAlign="Middle">
 			<expression><![CDATA[$F{desconto} != null  ? $F{desconto}  : 0.00]]></expression>
 			<box leftPadding="0" rightPadding="2"/>
 		</element>

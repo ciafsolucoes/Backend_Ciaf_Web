@@ -89,7 +89,31 @@ public class BudgetsServices {
 
 	public Budgets createAndUpdateProducts(Long id, Budgets budget){
 		budget.setId(id);
+		// Gravação parcial (ao incluir itens): o que veio vazio mantém o que já estava salvo (status, validade, cliente...)
+		repository.findById(id).ifPresent(atual -> {
+			if (budget.getClient_id() == null) budget.setClient_id(atual.getClient_id());
+			if (budget.getReceipts_id() == null) budget.setReceipts_id(atual.getReceipts_id());
+			if (vazio(budget.getClient())) budget.setClient(atual.getClient());
+			if (vazio(budget.getClient_cell())) budget.setClient_cell(atual.getClient_cell());
+			if (vazio(budget.getClient_email())) budget.setClient_email(atual.getClient_email());
+			if (vazio(budget.getVendedor())) budget.setVendedor(atual.getVendedor());
+			if (vazio(budget.getData())) budget.setData(atual.getData());
+			if (vazio(budget.getStatus())) budget.setStatus(atual.getStatus());
+			if (vazio(budget.getPrazo())) budget.setPrazo(atual.getPrazo());
+			if (vazio(budget.getValidade())) budget.setValidade(atual.getValidade());
+			if (vazio(budget.getAprovado_por())) budget.setAprovado_por(atual.getAprovado_por());
+			if (vazio(budget.getData_aprovacao())) budget.setData_aprovacao(atual.getData_aprovacao());
+			if (vazio(budget.getObservacao())) budget.setObservacao(atual.getObservacao());
+			if (budget.getDesconto() == null) budget.setDesconto(atual.getDesconto());
+			if (budget.getParcelado() == null) budget.setParcelado(atual.getParcelado());
+			if (budget.getSaved_b() == null) budget.setSaved_b(atual.getSaved_b());
+			if (budget.getDateCreated() == null) budget.setDateCreated(atual.getDateCreated());
+		});
 		return repository.save(budget);
+	}
+
+	private static boolean vazio(String s) {
+		return s == null || s.trim().isEmpty();
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Budgets createBudgetsAndReceipts(Budgets budget, List<BudgetsBillsToReceive> budgetsBillsToreceive) {

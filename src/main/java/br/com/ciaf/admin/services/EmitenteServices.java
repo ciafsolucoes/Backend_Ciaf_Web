@@ -98,9 +98,13 @@ public class EmitenteServices {
 	
 	public Emitente update(Long id, Emitente emitente) {		
 		emitente.setId(id);
+		// As telas gravam o emitente sem enviar a logo: manter a que já está salva (senão a logo some a cada gravação)
+		if (emitente.getImage() == null || emitente.getImage().length == 0) {
+			repository.findById(id).ifPresent(atual -> emitente.setImage(atual.getImage()));
+		}
 		return repository.save(emitente);
 	}
-	
+
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}

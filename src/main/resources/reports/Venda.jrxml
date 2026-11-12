@@ -174,7 +174,7 @@ WHERE
 	</variable>
 	<background splitType="Stretch"/>
 	<title height="83" splitType="Stretch">
-		<element kind="image" uuid="81b4f4c7-4976-4b53-bf53-8e3db770114a" x="0" y="0" width="230" height="80">
+		<element kind="image" onErrorType="Blank" uuid="81b4f4c7-4976-4b53-bf53-8e3db770114a" x="0" y="0" width="230" height="80">
 			<expression><![CDATA[$F{image} != null ? $F{image} : "images/ciaf560.png"]]></expression>
 		</element>
 		<element kind="textField" uuid="f7760338-9a57-4dc1-9ac6-fdc783be9a5b" x="303" y="55" width="30" height="20" fontSize="13.0" vTextAlign="Middle">

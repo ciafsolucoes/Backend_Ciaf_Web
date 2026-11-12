@@ -88,7 +88,7 @@ FROM ciaf_id.persons
 		<element kind="staticText" uuid="5b559b0d-d645-456d-bcbf-792fd9f92cd0" x="224" y="65" width="237" height="19" forecolor="#0C325E" fontSize="12.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
 			<text><![CDATA[Data da Emissão do Relatório]]></text>
 		</element>
-		<element kind="image" uuid="2233d24b-4a25-4436-a07e-106bfc6e8b1a" mode="Transparent" x="0" y="5" width="199" height="79" forecolor="rgba(3, 0, 0, 0.0)" style="aternate_colors_style">
+		<element kind="image" onErrorType="Blank" uuid="2233d24b-4a25-4436-a07e-106bfc6e8b1a" mode="Transparent" x="0" y="5" width="199" height="79" forecolor="rgba(3, 0, 0, 0.0)" style="aternate_colors_style">
 			<expression><![CDATA[$F{image} != null ? $F{image} : "images/ciaf560.png"]]></expression>
 		</element>
 	</title>

@@ -286,7 +286,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 		<element kind="rectangle" uuid="10330e3b-759c-451d-8130-f73e3b859e76" x="0" y="0" width="554" height="90" backcolor="rgba(255, 255, 255, 0.0)" radius="2">
 			<pen lineColor="#0E0875"/>
 		</element>
-		<element kind="image" uuid="81b4f4c7-4976-4b53-bf53-8e3db770114a" x="1" y="4" width="96" height="61" forecolor="#151E82">
+		<element kind="image" onErrorType="Blank" uuid="81b4f4c7-4976-4b53-bf53-8e3db770114a" x="1" y="4" width="96" height="61" forecolor="#151E82">
 			<expression><![CDATA[$F{image} != null ? $F{image} : "images/ciaf560.png"]]></expression>
 		</element>
 		<element kind="staticText" uuid="a44a902e-d86a-4341-bc4b-1e14ba8b07e4" mode="Opaque" x="382" y="47" width="70" height="18" forecolor="#1D207D" backcolor="#EBEBEB" fontSize="12.0" hTextAlign="Left" vTextAlign="Middle">

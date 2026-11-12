@@ -89,7 +89,7 @@ ON ciaf_id.apagar.emitente_id = emitente.id]]></query>
 	</variable>
 	<background splitType="Stretch"/>
 	<title height="90" splitType="Stretch">
-		<element kind="image" uuid="ccf9c852-3073-4f4c-a987-ca91840a6ac1" x="0" y="0" width="210" height="70">
+		<element kind="image" onErrorType="Blank" uuid="ccf9c852-3073-4f4c-a987-ca91840a6ac1" x="0" y="0" width="210" height="70">
 			<expression><![CDATA[$F{image} != null ? $F{image} : "images/ciaf560.png"]]></expression>
 		</element>
 		<element kind="staticText" uuid="2c62afc2-e151-49d8-a1bb-e4fd1d769e9e" x="300" y="30" width="200" height="29" forecolor="#0C325E" fontSize="14.0" bold="true" hTextAlign="Center" vTextAlign="Middle">

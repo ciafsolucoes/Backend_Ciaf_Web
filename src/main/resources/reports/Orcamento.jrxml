@@ -53,14 +53,14 @@
        ciaf_id.persons.cpf_cnpj,
        ciaf_id.persons.cep,
        coalesce(ciaf_id.persons.cellnumber, ' - ') AS cellnumber
-FROM ciaf_id.budgetsitems
-INNER JOIN ciaf_id.budgets
+FROM ciaf_id.budgets
+LEFT JOIN ciaf_id.budgetsitems
     ON ciaf_id.budgetsitems.budget_id = ciaf_id.budgets.id
-INNER JOIN ciaf_id.products
+LEFT JOIN ciaf_id.products
     ON ciaf_id.products.id = ciaf_id.budgetsitems.product_id
-JOIN ciaf_id.emitente
+LEFT JOIN ciaf_id.emitente
     ON ciaf_id.budgets.emitente_id = ciaf_id.emitente.id
-JOIN ciaf_id.persons
+LEFT JOIN ciaf_id.persons
     ON ciaf_id.persons.id = ciaf_id.budgets.client_id
 WHERE ciaf_id.budgets.id = $P{my_budget_id}
   AND ciaf_id.budgets.emitente_id = $P{emitente_id}]]></query>
@@ -477,7 +477,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 	<detail>
 		<band height="20" splitType="Prevent">
 			<element kind="textField" uuid="07e1a629-565a-4ccf-960b-d1e25fd2525f" x="420" y="2" width="135" height="16" forecolor="#1A1A1A" fontSize="8.0" pattern="¤ #,##0.##;¤-##0.##" hTextAlign="Center" vTextAlign="Bottom">
-				<expression><![CDATA["R$ " +  new java.text.DecimalFormat("#,##0.00").format($F{total_price})
+				<expression><![CDATA["R$ " +  new java.text.DecimalFormat("#,##0.00").format($F{total_price} != null ? $F{total_price} : 0.0)
 ]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d97f3e02-6425-44b1-9882-1e58890131d6"/>
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -629,7 +629,7 @@ WHERE ciaf_id.budgets.id = $P{my_budget_id}
 			<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 		</element>
 		<element kind="textField" uuid="2fe57844-5192-4c1e-a501-14577cac4672" x="460" y="80" width="92" height="26" textAdjust="ScaleFont" pattern="¤#,##0.##;¤-#,##0.##" hTextAlign="Right" vTextAlign="Middle">
-			<expression><![CDATA["R$ " +  new java.text.DecimalFormat("#,##0.00").format($F{total_price})]]></expression>
+			<expression><![CDATA["R$ " +  new java.text.DecimalFormat("#,##0.00").format($F{total_price} != null ? $F{total_price} : 0.0)]]></expression>
 			<box rightPadding="2"/>
 		</element>
 		<element kind="textField" uuid="3f38e30e-8e63-4d00-b47a-0f420548c989" x="459" y="170" width="93" height="28" fontSize="12.0" pattern="¤ #,##0.00;¤-#,##0.00" hTextAlign="Right" vTextAlign="Middle">

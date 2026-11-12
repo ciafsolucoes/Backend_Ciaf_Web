@@ -959,6 +959,22 @@ CREATE TABLE `vendedores` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
+--
+-- Table structure for table `texto_padrao` (textos que o usuario acrescenta na observacao do orcamento)
+--
+
+DROP TABLE IF EXISTS `texto_padrao`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `texto_padrao` (
+                                `id` bigint NOT NULL AUTO_INCREMENT,
+                                `emitente_id` bigint NOT NULL,
+                                `titulo` varchar(80) COLLATE utf8mb3_unicode_ci NOT NULL,
+                                `texto` text COLLATE utf8mb3_unicode_ci NOT NULL,
+                                PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 DROP TABLE IF EXISTS `caixadiario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;

@@ -109,7 +109,6 @@ public class BudgetsServices {
 		budget.setId(id);
 		// A tela não envia todos os campos: o que veio vazio mantém o valor já salvo (senão a gravação apaga esses dados)
 		repository.findById(id).ifPresent(atual -> {
-			if (budget.getPrazo() == null) budget.setPrazo(atual.getPrazo());
 			if (budget.getDesconto() == null) budget.setDesconto(atual.getDesconto());
 			if (budget.getReceipts_id() == null) budget.setReceipts_id(atual.getReceipts_id());
 			if (budget.getParcelado() == null) budget.setParcelado(atual.getParcelado());
